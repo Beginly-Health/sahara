@@ -21,12 +21,17 @@ dashboards are built from. It is not an application; nothing here deploys automa
 
 ## Where the queries come from
 
-The point of this repo is to centralize reporting SQL that is scattered across the codebases. Sources to mine:
+The point of this repo is to centralize reporting SQL that is scattered across the codebases, including the
+widgets, stats and reports each app already shows, rebuilt as Metabase questions and dashboards. All three repos
+are readable from here (`.claude/settings.json` adds them as working directories). Sources to mine:
 
 - `../death-valley/docs/sql/analytics-queries.md`: the existing catalog of analytics queries
 - `../death-valley`: the candidate platform (production database `beginlydemo`; the demo-sounding name is expected)
-- `../carcross`: the Employer app
-- `../beginly-admin`: Command, the internal admin tool (its own database, `beginly-admin-prod`, is NOT in the analytics copy)
+- `../carcross`: the Employer app. It has no database of its own (no migrations); it reads death-valley's, so all of its
+  widgets can be rebuilt from the copy.
+- `../beginly-admin`: Command, the internal admin tool. Its `beginly` connection reads death-valley's database, so those
+  queries port directly. Its default connection is its own database (`beginly-admin-prod`: Command users, roles, sessions),
+  which is NOT in the analytics copy.
 
 Put finished SQL in `queries/`, one file per question or model, with a comment header saying what it answers.
 
@@ -51,6 +56,7 @@ Put finished SQL in `queries/`, one file per question or model, with a comment h
 | Security groups | `sg-0dc251d2ca4a7ff63` (server, no inbound), `sg-00a2d740343c1413c` (clone, 5432 from server only) |
 | IAM role | `beginly-metabase-instance`: SSM core + `BeginlyAnalyticsSecrets` + `BeginlyAnalyticsNightlyRefresh` (`infra/iam-nightly-refresh-policy.json`) + `BeginlyAlertsPublish` |
 | Secrets | `beginly/analytics/master`, `beginly/analytics/reader` |
+| Backups | DLM `policy-02f2ba68e20d2e821`: daily 09:00 UTC snapshot of volumes tagged `Backup=metabase` (`vol-0c2d4002d61d325ed`), keeps 7, role `AWSDataLifecycleManagerDefaultRole` |
 | Alerts | SNS `beginly-cost-alerts` (email) |
 | Tailscale | tailnet `tailbbd43a`, device `beginly-metabase` (`tag:metabase`), `tailscale serve --bg 3000` |
 
