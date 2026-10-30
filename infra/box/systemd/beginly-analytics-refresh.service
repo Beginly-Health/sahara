@@ -1,0 +1,9 @@
+[Unit]
+Description=Nightly refresh of the beginly-analytics clone
+Wants=network-online.target docker.service
+After=network-online.target docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/metabase/bin/refresh.sh
+TimeoutStartSec=2h

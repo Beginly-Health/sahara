@@ -1,0 +1,6 @@
+[Unit]
+Description=Email an alert when the beginly-analytics refresh fails
+
+[Service]
+Type=oneshot
+ExecStart=/opt/metabase/bin/notify-failure.sh

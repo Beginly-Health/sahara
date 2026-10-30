@@ -1,0 +1,6 @@
+{"Version":"2012-10-17","Statement":[
+{"Sid":"Describe","Effect":"Allow","Action":["rds:DescribeDBClusters","rds:DescribeDBInstances"],"Resource":"*"},
+{"Sid":"ManageAnalyticsCloneOnly","Effect":"Allow","Action":["rds:DeleteDBCluster","rds:DeleteDBInstance","rds:CreateDBInstance","rds:ModifyDBCluster","rds:RestoreDBClusterToPointInTime","rds:AddTagsToResource"],"Resource":["arn:aws:rds:us-west-2:764882989014:cluster:beginly-analytics","arn:aws:rds:us-west-2:764882989014:db:beginly-analytics-1"]},
+{"Sid":"CloneFromProdAndPlaceInSubnets","Effect":"Allow","Action":["rds:RestoreDBClusterToPointInTime","rds:CreateDBInstance"],"Resource":["arn:aws:rds:us-west-2:764882989014:cluster:beginlyproduction-cluster","arn:aws:rds:us-west-2:764882989014:subgrp:rds-ec2-db-subnet-group-2"]},
+{"Sid":"UseProdEncryptionKeyViaRdsOnly","Effect":"Allow","Action":["kms:CreateGrant","kms:DescribeKey","kms:Decrypt","kms:GenerateDataKey*","kms:ReEncrypt*"],"Resource":"arn:aws:kms:us-west-2:764882989014:key/a0ef0127-bbc8-4e8d-a185-90b2ce7faf2c","Condition":{"StringEquals":{"kms:ViaService":"rds.us-west-2.amazonaws.com"}}}
+]}
