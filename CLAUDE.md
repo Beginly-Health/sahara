@@ -92,7 +92,7 @@ between then and 08:30 Eastern shows on the next day's refresh. Checked against 
 | IAM role | `beginly-metabase-instance`: SSM core + `BeginlyAnalyticsSecrets` + `BeginlyAnalyticsNightlyRefresh` (`infra/iam-nightly-refresh-policy.json`) + `BeginlyAlertsPublish` + `BeginlyMetabaseBedrockInference` (`infra/iam-bedrock-policy.json`) |
 | Secrets | `beginly/analytics/master`, `beginly/analytics/reader` |
 | Backups | DLM `policy-02f2ba68e20d2e821`: daily 09:00 UTC snapshot of volumes tagged `Backup=metabase` (`vol-0c2d4002d61d325ed`), keeps 7, role `AWSDataLifecycleManagerDefaultRole` |
-| Alerts | SNS `beginly-cost-alerts` (email) |
+| Alerts | SNS `beginly-cost-alerts` (email; topic policy lets AWS Budgets publish). Budget `bedrock-ai-monthly`: $50/month on Claude via Bedrock, alerts at 50%, 100% and forecast over |
 | Tailscale | tailnet `tailbbd43a`, device `beginly-metabase` (`tag:metabase`), `tailscale serve --bg 3000` |
 
 Nightly at 10:00 UTC, `refresh.sh` deletes the clone, re-clones prod, sets the clone's own master password,

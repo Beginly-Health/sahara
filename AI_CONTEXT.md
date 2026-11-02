@@ -21,6 +21,8 @@
 
 ## Known Gotchas
 
+- Claude on Bedrock bills through AWS Marketplace as "Claude Haiku 4.5 (Amazon Bedrock Edition)", not "Amazon Bedrock". Budget `bedrock-ai-monthly` filters on both names; a new Claude model brings a new billing name that must be added to it.
+- AWS bills Bedrock by model, not by caller. To split spend per app, give each app an application inference profile with a tag and filter on the tag.
 - `opportunity_matches.candidate_accept_date` (and the other match dates) are `timestamp` without zone, written in UTC. Compare with `(some_timestamptz AT TIME ZONE 'UTC')`. `users.created_at` is `timestamptz`.
 - In Postgres, `x BETWEEN a AT TIME ZONE 'UTC' AND b ...` is a syntax error; wrap each side in parentheses.
 - The nightly copy stops at 10:00 UTC. Anything after that (e.g. the last hours of the Slack acquisition window, which ends 08:30 Eastern) shows up a day late.
@@ -43,11 +45,10 @@
 
 ## Open Questions
 
-- [ ] Should Active Candidates Seeking Jobs (`is_seeking_jobs` in the Candidates model) require finished onboarding? Query `02` already does; the model and glossary don't.
-- [ ] Switch the Daily Acquisition queries to the US Pacific calendar day (midnight to midnight, default yesterday). Agreed in principle once the Slack post is retired; not changed yet.
-- [ ] Confirm Metabase's report timezone is set to `America/Los_Angeles`.
-- [ ] Confirm the 2026-11-02 refresh finished with the new `refresh.sh`.
-- [ ] Set an AWS spending alert to `beginly-cost-alerts` before the team gets Metabot.
-- [ ] Delete IAM user `beginly-metabase-bedrock-local` when local Bedrock testing ends.
+- [ ] (Parked by Bryan, revisit only when he raises it) Should Active Candidates Seeking Jobs (`is_seeking_jobs` in the Candidates model) require finished onboarding? Query `02` already does; the model and glossary don't.
+- [ ] To do: switch the Daily Acquisition queries to the US Pacific calendar day (midnight to midnight, default yesterday). Agreed in principle once the Slack post is retired; not changed yet.
+- [x] [RESOLVED 2026-11-02] Report timezone set to `America/Los_Angeles`; refresh confirmed with the new `refresh.sh`.
+- [x] [RESOLVED 2026-11-02] Budget `bedrock-ai-monthly` ($50/month) emails `beginly-cost-alerts` at 50%, 100% and forecast over 100%.
+- [x] [RESOLVED 2026-11-02] Deleted test IAM user `beginly-metabase-bedrock-local`; local Metabase uses Ollama on `atlas` for Metabot testing.
 - [ ] Update the team guide (https://claude.ai/artifact/MUZoqwd6teMWiFmGGEAooS) for Models, Metabot, the timezone and Daily Acquisition.
 - [ ] Later: Metrics, segments, SQL snippets, model foreign keys, and table descriptions via a death-valley migration.
