@@ -50,5 +50,5 @@
 - [x] [RESOLVED 2026-11-02] Report timezone set to `America/Los_Angeles`; refresh confirmed with the new `refresh.sh`.
 - [x] [RESOLVED 2026-11-02] Budget `bedrock-ai-monthly` ($50/month) emails `beginly-cost-alerts` at 50%, 100% and forecast over 100%.
 - [x] [RESOLVED 2026-11-02] Deleted test IAM user `beginly-metabase-bedrock-local`; local Metabase uses Ollama on `atlas` for Metabot testing.
-- [ ] Update the team guide (https://claude.ai/artifact/MUZoqwd6teMWiFmGGEAooS) for Models, Metabot, the timezone and Daily Acquisition.
+- [x] [RESOLVED 2026-11-02] Team guide updated for Models, Metabot, the timezone, Daily Acquisition, the 1-hour pause and the Bedrock budget.
 - [ ] Later: Metrics, segments, SQL snippets, model foreign keys, and table descriptions via a death-valley migration.
