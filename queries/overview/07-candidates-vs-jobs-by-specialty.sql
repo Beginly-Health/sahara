@@ -1,8 +1,8 @@
 -- Beginly Overview: where do we have candidates without jobs, or jobs without candidates?
 -- Display: Table, or Bar (x = specialty, y = candidates and live_jobs)
 -- Built from source tables, not analytics_specialty_count: its job side only keeps jobs with no close
--- date or a past one, so it drops jobs that are still open. A candidate or job with several
--- specialties counts once in each.
+-- date or a past one, so it drops jobs that are still open. Candidates are total active candidates
+-- who answered the specialty question. A candidate or job with several specialties counts once in each.
 
 WITH specialty_question AS (
     SELECT '01gy38dysqnmd06nrh85wdzdnz'::text AS id
@@ -15,9 +15,9 @@ candidate_specialties AS (
     JOIN users u ON u.id = uq.user_id
     WHERE uq.question_id = (SELECT id FROM specialty_question)
       AND uq.deleted_at IS NULL
-      AND u.intro_complete = true
       AND u.deleted_at IS NULL
       AND u.recruiter = false
+      AND u.adminsales IS NOT TRUE
       AND u.email NOT ILIKE '%@beginlyhealth.com'
       AND u.email NOT ILIKE '%@generalhospital.us'
 ),
@@ -30,8 +30,10 @@ job_specialties AS (
     WHERE rq.question_id = (SELECT id FROM specialty_question)
       AND rq.deleted_at IS NULL
       AND o.status = 'published'
+      AND o.publish_date <= now()
       AND o.deleted_at IS NULL
       AND (o.close_date IS NULL OR o.close_date >= CURRENT_DATE)
+      AND o.employer_id IS DISTINCT FROM '01hbbc903rmz2pv9fgegy1qxp5'
 ),
 candidate_counts AS (
     SELECT specialty, COUNT(DISTINCT user_id) AS candidates

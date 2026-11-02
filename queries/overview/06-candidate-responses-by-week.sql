@@ -11,6 +11,7 @@ WITH matches AS (
     WHERE om.deleted_at IS NULL
       AND u.deleted_at IS NULL
       AND u.recruiter = false
+      AND u.adminsales IS NOT TRUE
       AND u.email NOT ILIKE '%@beginlyhealth.com'
       AND u.email NOT ILIKE '%@generalhospital.us'
 ),

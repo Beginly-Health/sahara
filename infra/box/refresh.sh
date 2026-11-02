@@ -20,7 +20,7 @@ log "cloning beginlyproduction-cluster"
 aws rds restore-db-cluster-to-point-in-time --region $R --source-db-cluster-identifier beginlyproduction-cluster \
   --db-cluster-identifier $C --restore-type copy-on-write --use-latest-restorable-time \
   --db-subnet-group-name rds-ec2-db-subnet-group-2 --vpc-security-group-ids sg-00a2d740343c1413c \
-  --serverless-v2-scaling-configuration MinCapacity=0,MaxCapacity=4 --tags Key=Purpose,Value=analytics >/dev/null
+  --serverless-v2-scaling-configuration MinCapacity=0,MaxCapacity=4,SecondsUntilAutoPause=3600 --tags Key=Purpose,Value=analytics >/dev/null
 aws rds wait db-cluster-available --region $R --db-cluster-identifier $C
 
 log "creating instance $I"
