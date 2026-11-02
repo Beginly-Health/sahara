@@ -16,6 +16,8 @@
 | 2026-11-01 | Stay on the free edition of Metabase | Paid adds Metabot controls and sandboxing, but nothing that guarantees better answers |
 | 2026-11-02 | Report timezone `America/Los_Angeles`, not `America/Vancouver` | Beginly is a US West Coast business; BC stopped changing clocks, so the two now differ by an hour in winter |
 | 2026-11-02 | Clone pauses after 1 hour idle (`SecondsUntilAutoPause=3600` in `refresh.sh`) and Metabase uses `connectTimeout=60` | The 5-minute default meant most questions hit a ~15 s cold start, which outlasted Metabase's 10 s connect timeout |
+| 2026-11-02 | One Bedrock budget for now (`bedrock-ai-monthly`, $50/month); per-app budgets by tag once death-valley and carcross move from OpenAI to Bedrock | AWS bills Bedrock by model, not caller; tagged application inference profiles are the way to split it |
+| 2026-11-02 | Local Metabot testing uses Ollama on `atlas`; no AWS keys for local Metabase | The test IAM user was deleted; the team server uses its role |
 
 ---
 
