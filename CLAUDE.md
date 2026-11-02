@@ -63,6 +63,13 @@ not `intro_complete`.
 The team builds its own questions and dashboards on models rather than on the saved queries. `queries/models/` holds
 each model's SQL and `glossary.md`, in step with Metabase. Rules go in the model, so nobody has to remember them.
 
+Metabase's report timezone is `America/Los_Angeles` (US Pacific), so "yesterday" means a US Pacific day. Not
+`America/Vancouver`: BC stopped changing its clocks, so the two differ by an hour in winter.
+
+The Daily Acquisition dashboard (`queries/acquisition/`) uses the window of death-valley's daily #user-acquisition
+post: the 24 hours ending 08:30 Eastern. The nightly copy stops at 10:00 UTC, so a person who signs up or accepts
+between then and 08:30 Eastern shows on the next day's refresh. Checked against the 2026-11-01 post.
+
 ### Data traps (death-valley schema)
 
 - `users.first_name` / `last_name` are often empty; build names from `users.name`.
@@ -77,7 +84,7 @@ each model's SQL and `glossary.md`, in step with Metabase. Rules go in the model
 
 | Piece | ID |
 | --- | --- |
-| Analytics clone | cluster `beginly-analytics`, instance `beginly-analytics-1` (Serverless v2 0–4 ACU, private) |
+| Analytics clone | cluster `beginly-analytics`, instance `beginly-analytics-1` (Serverless v2 0–4 ACU, private; pauses after 1 hour idle and takes ~15 s to wake, so Metabase's connection sets `connectTimeout=60`) |
 | Clone endpoint | `beginly-analytics.cluster-cxam43dpp1ju.us-west-2.rds.amazonaws.com`, db `beginlydemo` |
 | Source | `beginlyproduction-cluster` (Aurora PG 14.20) |
 | Metabase server | EC2 `i-0a431e12387d827cd` (t4g.medium, AL2023 arm64), containers `metabase` + `metabase-db` |
